@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <title>flower Catalogue</title>
     <link rel="stylesheet" href="../css/style.css" />
+    <script src="../js/waterPot.js"></script>
   </head>
   <body>
     <hr />
-    <h2 id="homePageHeading">Flower Catalog</h2>
+    <h2 id="homePageHeading" class="font">Flower Catalog</h2>
     <hr class="bottom" />
     <div class="page">
-      <img id="flower" src="../image/freshorigins.jpg" alt="img" />
-      <div class="homePageDescription">
+      <img
+        id="flower"
+        src="../image/freshorigins.jpg"
+        alt="img"
+        class="imgMarginAndBorder"
+      />
+      <div class="text">
         <div class="link">
           <li><a href="./abeliophyllum.html">Abeliophyllum </a></li>
           <li><a href="./ageratum.html">Ageratum </a></li>
@@ -25,13 +31,5 @@
         />
       </div>
     </div>
-
-    <script>
-      const hideJar = function() {
-        const jar = document.getElementById('jar');
-        jar.classList.add('hide');
-        setTimeout(() => jar.classList.remove('hide'), 1000);
-      };
-    </script>
   </body>
 </html>

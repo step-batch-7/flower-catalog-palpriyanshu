@@ -1,17 +1,14 @@
 #flower {
-  width: 1000px;
-  height: 630px;
-  border: 1px solid black;
+  width: 800px;
+  height: 550px;
 }
 
 #homePageHeading {
-  font-family: sans-serif;
-  color: rgb(250, 195, 12);
   text-align: right;
   margin-right: 280px;
 }
 
-hr.bottom {
+.bottom {
   border: 0.5px solid black;
 }
 
@@ -21,44 +18,23 @@ hr.bottom {
   padding-right: 100px;
 }
 
-#jar {
-  animation: hideJar 1s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  margin: 0 auto;
-}
-
 .link {
   justify-content: center;
   padding-left: 5%;
   margin-right: 500px;
 }
 
-.homePageDescription {
-  margin: auto 0;
-}
-
-.pageHeading {
-  font-family: sans-serif;
-  color: rgb(250, 195, 12);
-  text-align: center;
-  justify-content: center;
-}
-
-.back {
-  text-decoration-color: blueviolet;
-}
-
 #abeliophyllum {
-  width: 500px;
-  height: auto;
+  width: 450px;
+}
+
+.imgMarginAndBorder {
   margin: 5px;
+  border: 1px solid black;
 }
 
 #ageratum {
   width: 800px;
-  height: auto;
-  margin: 5px;
 }
 
 .text {
@@ -66,10 +42,23 @@ hr.bottom {
   margin: auto 0;
 }
 
-.rightBorder {
-  border-right: 0.5 solid gray;
-}
-
 .hide {
   visibility: hidden;
+}
+
+.font {
+  font-family: sans-serif;
+  color: rgb(255, 195, 12);
+}
+
+.textAlign {
+  text-align: center;
+}
+
+.margin {
+  margin: 100px;
+}
+
+#submitButton {
+  background-image: linear-gradient(gray, #eee);
 }
