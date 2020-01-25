@@ -1,0 +1,36 @@
+#flower {
+  width: 1000px;
+  height: 630px;
+  border: 1px solid black;
+}
+
+#homePageHeading {
+  font-family: sans-serif;
+  color: rgb(250, 195, 12);
+  text-align: right;
+  margin-right: 280px;
+}
+
+hr.bottom {
+  border: 0.5px solid black;
+}
+
+.page {
+  display: flex;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+#jar {
+  margin: 0 auto;
+}
+
+.link {
+  justify-content: center;
+  padding-left: 5%;
+  margin-right: 500px;
+}
+
+.homePageDescription {
+  margin: auto 0;
+}
