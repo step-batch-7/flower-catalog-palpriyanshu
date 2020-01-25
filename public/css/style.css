@@ -22,6 +22,9 @@ hr.bottom {
 }
 
 #jar {
+  animation: hideJar 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
   margin: 0 auto;
 }
 
@@ -34,3 +37,4 @@ hr.bottom {
 .homePageDescription {
   margin: auto 0;
 }
+

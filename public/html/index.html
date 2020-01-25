@@ -17,8 +17,21 @@
           <li><a href="./ageratum.html">Ageratum </a></li>
         </div>
         <a href="./commentPage.html">Guest Book</a>
-        <img id="jar" src="../gif/animated-flower-image-0021.gif" alt="gif" />
+        <img
+          id="jar"
+          src="../gif/animated-flower-image-0021.gif"
+          alt="gif"
+          onclick="hideJar()"
+        />
       </div>
     </div>
+
+    <script>
+      const hideJar = function() {
+        const jarImg = document.getElementById('jar');
+        jarImg.style.display = 'none';
+        setTimeout(() => (img.style.display = 'block'), 1000);
+      };
+    </script>
   </body>
 </html>
