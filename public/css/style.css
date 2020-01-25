@@ -51,7 +51,13 @@ hr.bottom {
 
 #abeliophyllum {
   width: 500px;
-  height: 500px;
+  height: auto;
+  margin: 5px;
+}
+
+#ageratum {
+  width: 800px;
+  height: auto;
   margin: 5px;
 }
 
@@ -60,3 +66,10 @@ hr.bottom {
   margin: auto 0;
 }
 
+.rightBorder {
+  border-right: 0.5 solid gray;
+}
+
+.hide {
+  visibility: hidden;
+}

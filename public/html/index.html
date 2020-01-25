@@ -28,9 +28,9 @@
 
     <script>
       const hideJar = function() {
-        const jarImg = document.getElementById('jar');
-        jarImg.style.display = 'none';
-        setTimeout(() => (img.style.display = 'block'), 1000);
+        const jar = document.getElementById('jar');
+        jar.classList.add('hide');
+        setTimeout(() => jar.classList.remove('hide'), 1000);
       };
     </script>
   </body>
