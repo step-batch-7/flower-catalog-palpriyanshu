@@ -38,3 +38,25 @@ hr.bottom {
   margin: auto 0;
 }
 
+.pageHeading {
+  font-family: sans-serif;
+  color: rgb(250, 195, 12);
+  text-align: center;
+  justify-content: center;
+}
+
+.back {
+  text-decoration-color: blueviolet;
+}
+
+#abeliophyllum {
+  width: 500px;
+  height: 500px;
+  margin: 5px;
+}
+
+.text {
+  padding-top: 100px;
+  margin: auto 0;
+}
+
