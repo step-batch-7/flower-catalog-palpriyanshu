@@ -4,6 +4,10 @@ const Request = require('./lib/request.js');
 const Response = require('./lib/response.js');
 const CONTENT_TYPE = require('../public/js/contentTypeLookUp.js');
 const previousComment = require(`${__dirname}/../commentHistory.json`);
+const {
+  formatComment,
+  updateComments
+} = require('../public/js/commentsUpdater.js');
 
 const STATIC_FOLDER = `${__dirname}/../public`;
 
@@ -23,21 +27,21 @@ const serveStaticFiles = function(req) {
   return res;
 };
 
-const formatComment = function(body) {
-  return {
-    name: body.name,
-    comment: body.comment,
-    dateAndTime: new Date()
-  };
-};
-
 const servePost = function(req) {
   const url = `${__dirname}/../commentHistory.json`;
   const formattedComment = formatComment(req.body);
   previousComment.unshift(formattedComment);
   writeFileSync(url, JSON.stringify(previousComment, null, 2));
-
-  return serveStaticFiles(req);
+  const content = updateComments(previousComment);
+  const [, extn] = req.url.match(/.*\.(.*)$/);
+  const contentType = CONTENT_TYPE[extn];
+  const res = new Response();
+  res.setHeader('content-type', contentType);
+  res.setHeader('content-length', content.length);
+  res.statusCode = 200;
+  res.msg = 'OK';
+  res.body = content;
+  return res;
 };
 
 const fileHandler = function(req) {

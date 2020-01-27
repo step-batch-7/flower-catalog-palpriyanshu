@@ -62,3 +62,11 @@
 #submitButton {
   background-image: linear-gradient(gray, #eee);
 }
+
+#commentBox {
+  padding: 5px;
+  border: 0.5px solid gray;
+  width: 800px;
+  margin: 5px;
+  background-color: rgb(227, 245, 245);
+}
