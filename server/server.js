@@ -2,18 +2,10 @@ const {Server} = require('net');
 const {readFileSync, existsSync, writeFileSync} = require('fs');
 const Request = require('./lib/request.js');
 const Response = require('./lib/response.js');
+const CONTENT_TYPE = require('../public/js/contentTypeLookUp.js');
 const previousComment = require(`${__dirname}/../commentHistory.json`);
 
 const STATIC_FOLDER = `${__dirname}/../public`;
-const CONTENT_TYPE = {
-  js: 'application/javascript',
-  css: 'text/css',
-  html: 'text/html',
-  jpg: 'image/jpeg',
-  pdf: 'application/pdf',
-  gif: 'image/gif',
-  txt: 'text/plain'
-};
 
 const serveStaticFiles = function(req) {
   if (!existsSync(req.url)) {
