@@ -1,7 +1,8 @@
 const {Server} = require('net');
-const {readFileSync, existsSync} = require('fs');
+const {readFileSync, existsSync, writeFileSync} = require('fs');
 const Request = require('./lib/request.js');
 const Response = require('./lib/response.js');
+const previousComment = require(`${__dirname}/../commentHistory.json`);
 
 const STATIC_FOLDER = `${__dirname}/../public`;
 const CONTENT_TYPE = {
@@ -30,12 +31,32 @@ const serveStaticFiles = function(req) {
   return res;
 };
 
+const formatComment = function(body) {
+  return {
+    name: body.name,
+    comment: body.comment,
+    dateAndTime: new Date()
+  };
+};
+
+const servePost = function(req) {
+  const url = `${__dirname}/../commentHistory.json`;
+  const formattedComment = formatComment(req.body);
+  previousComment.unshift(formattedComment);
+  writeFileSync(url, JSON.stringify(previousComment, null, 2));
+
+  return serveStaticFiles(req);
+};
+
 const fileHandler = function(req) {
   if (req.url === '/') {
     req.url = '/index.html';
   }
   req.url = `${STATIC_FOLDER}${req.url}`;
-  
+
+  if (req.method === 'POST') {
+    return servePost;
+  }
   if (req.method === 'GET') {
     return serveStaticFiles;
   }
@@ -56,7 +77,6 @@ const respondOnConnect = function(socket) {
   socket.on('data', text => {
     console.warn(`${remote} data:\n`);
     const req = Request.parse(text);
-    console.log(req);
     const handler = fileHandler(req);
     const res = handler(req);
     res.writeTo(socket);
