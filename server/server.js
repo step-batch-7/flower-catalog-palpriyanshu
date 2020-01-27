@@ -34,11 +34,8 @@ const fileHandler = function(req) {
   if (req.url === '/') {
     req.url = '/index.html';
   }
-  console.log(req.url);
   req.url = `${STATIC_FOLDER}${req.url}`;
-  // if (req.method === 'POST') {
-  //   return registerPlayerPost;
-  // }
+  
   if (req.method === 'GET') {
     return serveStaticFiles;
   }
