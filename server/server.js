@@ -2,7 +2,7 @@ const {Server} = require('net');
 const {readFileSync, existsSync, writeFileSync} = require('fs');
 const Request = require('./lib/request.js');
 const Response = require('./lib/response.js');
-const CONTENT_TYPE = require('../public/js/contentTypeLookUp.js');
+const CONTENT_TYPE = require('./lib/mimeTypes.js');
 const previousComment = require(`${__dirname}/../commentHistory.json`);
 const {
   formatComment,
