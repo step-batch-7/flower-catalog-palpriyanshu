@@ -11,12 +11,8 @@ const {
 
 const STATIC_FOLDER = `${__dirname}/../public`;
 
-const serveStaticFiles = function(req) {
-  if (!existsSync(req.url)) {
-    return new Response();
-  }
+const successFulResponse = function(req, content) {
   const [, extn] = req.url.match(/.*\.(.*)$/);
-  content = readFileSync(`${req.url}`);
   const contentType = CONTENT_TYPE[extn];
   const res = new Response();
   res.setHeader('content-type', contentType);
@@ -25,6 +21,14 @@ const serveStaticFiles = function(req) {
   res.msg = 'OK';
   res.body = content;
   return res;
+};
+
+const serveStaticFiles = function(req) {
+  if (!existsSync(req.url)) {
+    return new Response();
+  }
+  content = readFileSync(`${req.url}`);
+  return successFulResponse(req, content);
 };
 
 const servePost = function(req) {
@@ -32,27 +36,29 @@ const servePost = function(req) {
   const formattedComment = formatComment(req.body);
   previousComment.unshift(formattedComment);
   writeFileSync(url, JSON.stringify(previousComment, null, 2));
+  return serveGuestBook(req);
+};
+
+const serveGuestBook = function(req) {
   const content = updateComments(previousComment);
-  const [, extn] = req.url.match(/.*\.(.*)$/);
-  const contentType = CONTENT_TYPE[extn];
-  const res = new Response();
-  res.setHeader('content-type', contentType);
-  res.setHeader('content-length', content.length);
-  res.statusCode = 200;
-  res.msg = 'OK';
-  res.body = content;
-  return res;
+  return successFulResponse(req, content);
 };
 
 const fileHandler = function(req) {
   if (req.url === '/') {
     req.url = '/index.html';
   }
+
+  if (req.method === 'GET' && req.url === '/guestBook.html') {
+    return serveGuestBook;
+  }
+
   req.url = `${STATIC_FOLDER}${req.url}`;
 
   if (req.method === 'POST') {
     return servePost;
   }
+
   if (req.method === 'GET') {
     return serveStaticFiles;
   }

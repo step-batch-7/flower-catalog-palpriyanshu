@@ -1,6 +1,10 @@
 const {readFileSync} = require('fs');
 
 const formatComment = function(body) {
+  body.name = decodeURIComponent(body.name);
+  body.comment = decodeURIComponent(body.comment);
+  body.name = body.name.replace(/\+/g, ' ');
+  body.comment = body.comment.replace(/\+/g, ' ');
   return {
     name: body.name,
     comment: body.comment,
