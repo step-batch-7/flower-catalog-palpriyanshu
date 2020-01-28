@@ -6,7 +6,8 @@ const CONTENT_TYPE = {
   pdf: 'application/pdf',
   gif: 'image/gif',
   txt: 'text/plain',
-  json: 'application/json'
+  json: 'application/json',
+  png: 'image/png'
 };
 
 module.exports = CONTENT_TYPE;

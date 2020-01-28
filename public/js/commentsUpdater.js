@@ -1,10 +1,14 @@
 const {readFileSync} = require('fs');
 
+const decodeSpecialChar = function(element) {
+  element = element.replace(/\+/g, ' ');
+  element = element.replace(/\%0D\%0A/g, '<br />');
+  return decodeURIComponent(element);
+};
+
 const formatComment = function(body) {
-  body.name = decodeURIComponent(body.name);
-  body.comment = decodeURIComponent(body.comment);
-  body.name = body.name.replace(/\+/g, ' ');
-  body.comment = body.comment.replace(/\+/g, ' ');
+  body.name = decodeSpecialChar(body.name);
+  body.comment = decodeSpecialChar(body.comment);
   return {
     name: body.name,
     comment: body.comment,
@@ -18,10 +22,17 @@ const updateComments = function(comments) {
     'utf8'
   );
   const html = comments.map(comment => {
-    return `<div id="commentBox">
-    <h4>${comment.name}</h4>\n
+    return `
+    <div id="commentBox">
+    <h4>
+    <img src="../image/humanLogo.png" alt="img" id="logo"/>
+    ${comment.name}</h4>\n
     <p> ${comment.comment} </p>\n
-    <footer>${comment.dateAndTime}</footer></div>`;
+    <footer class="rightFooter">
+    <img src="../image/clock.png" alt="clk" id="clock"/>
+    ${new Date(comment.dateAndTime).toUTCString()}\n
+    </footer>
+    </div>`;
   });
   guestBook = guestBook.replace(/__Comments__/, html.join('\n'));
   return guestBook;

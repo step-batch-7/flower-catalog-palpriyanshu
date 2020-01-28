@@ -54,6 +54,7 @@ const findHandler = function(req) {
   }
 
   req.url = `${STATIC_FOLDER}${req.url}`;
+
   if (req.method === 'POST') {
     return servePost;
   }
