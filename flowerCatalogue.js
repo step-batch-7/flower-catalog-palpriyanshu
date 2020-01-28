@@ -1,5 +1,4 @@
 const {readFileSync, existsSync, writeFileSync} = require('fs');
-const Response = require('./server/lib/response.js');
 const CONTENT_TYPE = require('./server/lib/mimeTypes.js');
 
 const previousComment = require(`${__dirname}/commentHistory.json`);
@@ -11,37 +10,55 @@ const {
 
 const STATIC_FOLDER = `${__dirname}/public`;
 
-const successFulResponse = function(req, content) {
+const successFulResponse = function(req, res, content) {
   const [, extn] = req.url.match(/.*\.(.*)$/);
   const contentType = CONTENT_TYPE[extn];
-  const res = new Response();
   res.setHeader('content-type', contentType);
-  res.setHeader('content-length', content.length);
-  res.statusCode = 200;
-  res.msg = 'OK';
-  res.body = content;
-  return res;
+  res.write(content);
+  res.end();
 };
 
-const serveStaticFiles = function(req) {
+const pickupParams = (query, keyValue) => {
+  const [key, value] = keyValue.split('=');
+  query[key] = value;
+  return query;
+};
+const readParams = keyValueTextPairs =>
+  keyValueTextPairs.split('&').reduce(pickupParams, {});
+
+const serveStaticFiles = function(req, res) {
   if (!existsSync(req.url)) {
     return new Response();
   }
   content = readFileSync(`${req.url}`);
-  return successFulResponse(req, content);
+  return successFulResponse(req, res, content);
 };
 
-const servePost = function(req) {
-  const url = `${__dirname}/commentHistory.json`;
-  const formattedComment = formatComment(req.body);
-  previousComment.unshift(formattedComment);
-  writeFileSync(url, JSON.stringify(previousComment, null, 2));
-  return serveGuestBook(req);
+const savePost = function(req) {
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+
+  req.on('end', () => {
+    body = readParams(body);
+    const url = `${__dirname}/commentHistory.json`;
+    const formattedComment = formatComment(body);
+    previousComment.unshift(formattedComment);
+    writeFileSync(url, JSON.stringify(previousComment, null, 2));
+  });
 };
 
-const serveGuestBook = function(req) {
+const servePost = function(req, res) {
+  savePost(req);
+  res.statusCode = 303;
+  res.setHeader('location', '/guestBook.html');
+  res.end();
+};
+
+const serveGuestBook = function(req, res) {
   const content = updateComments(previousComment);
-  return successFulResponse(req, content);
+  return successFulResponse(req, res, content);
 };
 
 const findHandler = function(req) {
@@ -63,12 +80,12 @@ const findHandler = function(req) {
     return serveStaticFiles;
   }
 
-  return () => new Response();
+  return res;
 };
 
-const processRequest = req => {
+const processRequest = (req, res) => {
   const handler = findHandler(req);
-  return handler(req);
+  return handler(req, res);
 };
 
 module.exports = {processRequest};
