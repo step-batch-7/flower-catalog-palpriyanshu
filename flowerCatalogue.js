@@ -10,14 +10,6 @@ const {
 
 const STATIC_FOLDER = `${__dirname}/public`;
 
-const successFulResponse = function(req, res, content) {
-  const [, extn] = req.url.match(/.*\.(.*)$/);
-  const contentType = CONTENT_TYPE[extn];
-  res.setHeader('content-type', contentType);
-  res.write(content);
-  res.end();
-};
-
 const pickupParams = (query, keyValue) => {
   const [key, value] = keyValue.split('=');
   query[key] = value;
@@ -25,14 +17,6 @@ const pickupParams = (query, keyValue) => {
 };
 const readParams = keyValueTextPairs =>
   keyValueTextPairs.split('&').reduce(pickupParams, {});
-
-const serveStaticFiles = function(req, res) {
-  if (!existsSync(req.url)) {
-    return new Response();
-  }
-  content = readFileSync(`${req.url}`);
-  return successFulResponse(req, res, content);
-};
 
 const savePost = function(req) {
   let body = '';
@@ -56,8 +40,24 @@ const servePost = function(req, res) {
   res.end();
 };
 
+const successFulResponse = function(req, res, content) {
+  const [, extn] = req.url.match(/.*\.(.*)$/);
+  const contentType = CONTENT_TYPE[extn];
+  res.setHeader('content-type', contentType);
+  res.write(content);
+  res.end();
+};
+
 const serveGuestBook = function(req, res) {
   const content = updateComments(previousComment);
+  return successFulResponse(req, res, content);
+};
+
+const serveStaticFiles = function(req, res) {
+  if (!existsSync(req.url)) {
+    return new Response();
+  }
+  content = readFileSync(`${req.url}`);
   return successFulResponse(req, res, content);
 };
 
