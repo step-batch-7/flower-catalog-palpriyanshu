@@ -1,5 +1,5 @@
 const {Server} = require('http');
-const {app} = require('../flowerCatalogue.js');
+const {app} = require('./lib/handler.js');
 
 const main = function(port = 4000) {
   const server = new Server(app.serveRequest.bind(app));
