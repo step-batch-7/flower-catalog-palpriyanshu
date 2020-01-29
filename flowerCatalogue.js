@@ -1,4 +1,4 @@
-const {readFileSync, existsSync, writeFileSync} = require('fs');
+const {readFileSync, existsSync, writeFileSync, statSync} = require('fs');
 const CONTENT_TYPE = require('./server/lib/mimeTypes.js');
 
 const previousComment = require(`${__dirname}/commentHistory.json`);
@@ -35,7 +35,6 @@ const savePost = function(req) {
 
 const servePost = function(req, res) {
   req.url = `${STATIC_FOLDER}${req.url}`;
-  console.log('post----', req.url);
   savePost(req);
   res.statusCode = 303;
   res.setHeader('location', '/guestBook.html');
@@ -43,8 +42,8 @@ const servePost = function(req, res) {
 };
 
 const successFulResponse = function(req, res, content) {
-  const [, extn] = req.url.match(/.*\.(.*)$/);
-  const contentType = CONTENT_TYPE[extn];
+  const extension = req.url.match(/.*\.(.*)$/).pop();
+  const contentType = CONTENT_TYPE[extension];
   res.setHeader('content-type', contentType);
   res.write(content);
   res.end();
@@ -55,14 +54,14 @@ const serveGuestBook = function(req, res) {
   return successFulResponse(req, res, content);
 };
 
-const serveStaticFiles = function(req, res) {
-  req.url = `${STATIC_FOLDER}${req.url}`;
-
-  if (!existsSync(req.url)) {
-    res.end('hello');
+const serveStaticFiles = function(req, res, next) {
+  const absPath = `${STATIC_FOLDER}${req.url}`;
+  const stat = existsSync(absPath) && statSync(absPath).isFile();
+  if (!stat) {
+    next();
     return;
   }
-  content = readFileSync(`${req.url}`);
+  content = readFileSync(absPath);
   return successFulResponse(req, res, content);
 };
 
@@ -75,26 +74,35 @@ const notFound = function(req, res) {
   return res.end();
 };
 
-const postHandler = {
-  '/guestBook.html': servePost
+const processRequest = function(req, res) {
+  const methodHandlers = methods[req.method] || methods.default;
+  const matchedHandlers = methodHandlers.filter(route => {
+    return req.url.match(route.path);
+  });
+  const next = function() {
+    if (matchedHandlers.length === 0) return;
+    const router = matchedHandlers.shift();
+    return router.handler(req, res, next);
+  };
+  return next();
 };
 
-const getHandlers = {
-  '/': homePage,
-  '/guestBook.html': serveGuestBook,
-  default: serveStaticFiles
-};
+const postHandler = [
+  {path: '/guestBook.html', handler: servePost},
+  {path: '', handler: notFound}
+];
+
+const getHandlers = [
+  {path: '/guestBook.html', handler: serveGuestBook},
+  {path: '', handler: serveStaticFiles},
+  {path: '/', handler: homePage},
+  {path: '', handler: notFound}
+];
 
 const methods = {
   GET: getHandlers,
   POST: postHandler,
   default: {default: notFound}
-};
-
-const processRequest = (req, res) => {
-  const methodHandler = methods[req.method] || methods.default;
-  const handler = methodHandler[req.url] || methodHandler.default;
-  return handler(req, res);
 };
 
 module.exports = {processRequest};
