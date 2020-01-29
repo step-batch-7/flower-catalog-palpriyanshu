@@ -34,6 +34,8 @@ const savePost = function(req) {
 };
 
 const servePost = function(req, res) {
+  req.url = `${STATIC_FOLDER}${req.url}`;
+  console.log('post----', req.url);
   savePost(req);
   res.statusCode = 303;
   res.setHeader('location', '/guestBook.html');
@@ -54,37 +56,44 @@ const serveGuestBook = function(req, res) {
 };
 
 const serveStaticFiles = function(req, res) {
+  req.url = `${STATIC_FOLDER}${req.url}`;
+
   if (!existsSync(req.url)) {
-    return new Response();
+    res.end('hello');
+    return;
   }
   content = readFileSync(`${req.url}`);
   return successFulResponse(req, res, content);
 };
 
-const findHandler = function(req) {
-  if (req.url === '/') {
-    req.url = '/index.html';
-  }
+const homePage = function(req, res) {
+  req.url = '/index.html';
+  return serveStaticFiles(req, res);
+};
 
-  if (req.method === 'GET' && req.url === '/guestBook.html') {
-    return serveGuestBook;
-  }
+const notFound = function(req, res) {
+  return res.end();
+};
 
-  req.url = `${STATIC_FOLDER}${req.url}`;
+const postHandler = {
+  '/guestBook.html': servePost
+};
 
-  if (req.method === 'POST') {
-    return servePost;
-  }
+const getHandlers = {
+  '/': homePage,
+  '/guestBook.html': serveGuestBook,
+  default: serveStaticFiles
+};
 
-  if (req.method === 'GET') {
-    return serveStaticFiles;
-  }
-
-  return res;
+const methods = {
+  GET: getHandlers,
+  POST: postHandler,
+  default: {default: notFound}
 };
 
 const processRequest = (req, res) => {
-  const handler = findHandler(req);
+  const methodHandler = methods[req.method] || methods.default;
+  const handler = methodHandler[req.url] || methodHandler.default;
   return handler(req, res);
 };
 
