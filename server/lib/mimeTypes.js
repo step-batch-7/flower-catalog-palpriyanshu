@@ -7,7 +7,8 @@ const CONTENT_TYPE = {
   gif: 'image/gif',
   txt: 'text/plain',
   json: 'application/json',
-  png: 'image/png'
+  png: 'image/png',
+  ico: 'image/x-ico'
 };
 
 module.exports = CONTENT_TYPE;

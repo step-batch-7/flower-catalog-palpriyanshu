@@ -1,8 +1,8 @@
 const {Server} = require('http');
-const {processRequest} = require('../flowerCatalogue.js');
+const {app} = require('../flowerCatalogue.js');
 
 const main = function(port = 4000) {
-  const server = new Server(processRequest);
+  const server = new Server(app.serveRequest.bind(app));
   server.on('clientError', err => console.error('server error', err));
   server.on('listening', () => {
     console.log('start listening', server.address());
