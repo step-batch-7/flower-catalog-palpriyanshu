@@ -1,11 +1,12 @@
+const {stdout, stderr} = require('process');
 const {Server} = require('http');
 const {app} = require('./lib/handler.js');
 
 const main = function(port = 4000) {
   const server = new Server(app.serveRequest.bind(app));
-  server.on('clientError', err => console.error('server error', err));
+  server.on('clientError', err => stderr.write(`server error, ${err}\n`));
   server.on('listening', () => {
-    console.log('start listening', server.address());
+    stdout.write(`server listening to ${JSON.stringify(server.address())}\n`);
   });
   server.listen(port);
 };
