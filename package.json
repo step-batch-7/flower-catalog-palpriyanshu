@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/step-batch-7/flower-catalog-palpriyanshu/issues"
   },
-  "homepage": "https://github.com/step-batch-7/flower-catalog-palpriyanshu#readme"
+  "homepage": "https://github.com/step-batch-7/flower-catalog-palpriyanshu#readme",
+  "dependencies": {
+    "eslint": "^6.8.0"
+  }
 }
