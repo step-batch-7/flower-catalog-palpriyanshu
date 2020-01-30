@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc mocha",
     "start": "node server.js"
   },
   "repository": {
@@ -24,5 +24,8 @@
   "dependencies": {
     "eslint": "^6.8.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "^7.0.1",
+    "supertest": "^4.0.2"
+  }
 }
