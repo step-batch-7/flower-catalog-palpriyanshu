@@ -61,11 +61,23 @@ describe('PUT /guestBook.html', function() {
   });
 });
 
-describe('get /badFile.html', function() {
+describe('GET /badFile.html', function() {
   it('should respond with "not found"', function(done) {
     request(app.serveRequest.bind(app))
       .get('/badFile.html')
       .set('Accept', '*/*')
       .expect(STATUS_CODES.notFound, done);
+  });
+});
+
+describe('POST /guestBook.html', function() {
+  it('should respond with "redirect"', function(done) {
+    request(app.serveRequest.bind(app))
+      .post('/guestBook.html')
+      .set('Accept', '*/*')
+      .expect(STATUS_CODES.redirect, done)
+      .expect(res => {
+        res.headers['location'] === '/guestBook.html';
+      });
   });
 });
