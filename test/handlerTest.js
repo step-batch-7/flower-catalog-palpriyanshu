@@ -1,8 +1,6 @@
 const request = require('supertest');
 const {app} = require('../lib/handler.js');
-
-const STATUS_CODE2X = 200;
-const STATUS_CODE4X = 404;
+const STATUS_CODES = require('../lib/statusCodes.js');
 
 describe('GET /', function() {
   it('should respond with html', function(done) {
@@ -10,7 +8,7 @@ describe('GET /', function() {
       .get('/')
       .set('Accept', '*/*')
       .expect('Content-Type', /html/)
-      .expect(STATUS_CODE2X, done);
+      .expect(STATUS_CODES.ok, done);
   });
 });
 
@@ -20,7 +18,7 @@ describe('GET /index.html', function() {
       .get('/index.html')
       .set('Accept', '*/*')
       .expect('Content-Type', /html/)
-      .expect(STATUS_CODE2X, done);
+      .expect(STATUS_CODES.ok, done);
   });
 });
 
@@ -30,7 +28,7 @@ describe('GET /guestBook.html', function() {
       .get('/guestBook.html')
       .set('Accept', '*/*')
       .expect('Content-Type', /html/)
-      .expect(STATUS_CODE2X, done);
+      .expect(STATUS_CODES.ok, done);
   });
 });
 
@@ -40,7 +38,7 @@ describe('GET /css/style.css', function() {
       .get('/css/style.css')
       .set('Accept', '*/*')
       .expect('Content-Type', /css/)
-      .expect(STATUS_CODE2X, done);
+      .expect(STATUS_CODES.ok, done);
   });
 });
 
@@ -50,7 +48,7 @@ describe('GET /image/clock.png', function() {
       .get('/image/clock.png')
       .set('Accept', '*/*')
       .expect('Content-Type', /png/)
-      .expect(STATUS_CODE2X, done);
+      .expect(STATUS_CODES.ok, done);
   });
 });
 
@@ -59,7 +57,7 @@ describe('PUT /guestBook.html', function() {
     request(app.serveRequest.bind(app))
       .put('/guestBook.html')
       .set('Accept', '*/*')
-      .expect(STATUS_CODE4X, done);
+      .expect(STATUS_CODES.notFound, done);
   });
 });
 
@@ -68,7 +66,6 @@ describe('get /badFile.html', function() {
     request(app.serveRequest.bind(app))
       .get('/badFile.html')
       .set('Accept', '*/*')
-      .expect(STATUS_CODE4X, done);
+      .expect(STATUS_CODES.notFound, done);
   });
 });
-
