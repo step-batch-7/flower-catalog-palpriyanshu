@@ -7,8 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "nyc mocha",
-    "start": "node server.js"
+    "test": "export DATA_STORE=$(pwd)/test/resource/comments.json ; nyc mocha",
+    "start": "export DATA_STORE=$(pwd)/dataBase/commentHistory.json; node server.js"
   },
   "repository": {
     "type": "git",
