@@ -68,7 +68,7 @@
   border: 0.5px solid gray;
   width: 800px;
   margin: 5px;
-  background-image: linear-gradient(white, rgb(184, 213, 224), white);
+  background-image: linear-gradient(rgb(240, 240, 172), white);
   border-radius: 10px;
   overflow: scroll;
   word-wrap: break-word;
