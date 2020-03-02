@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/step-batch-7/flower-catalog-palpriyanshu#readme",
   "dependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "mocha": "^7.0.1",
