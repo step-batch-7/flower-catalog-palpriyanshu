@@ -92,7 +92,6 @@ describe('POST /guestBook.html ', function() {
         .get('/guestBook.html')
         .set('Accept', '*/*')
         .expect('Content-Type', /html/)
-        .expect('content-length', '941')
         .expect(STATUS_CODES.ok, done);
     });
   });
@@ -113,7 +112,6 @@ describe('POST /guestBook.html ', function() {
         .get('/guestBook.html')
         .set('Accept', '*/*')
         .expect('Content-Type', /html/)
-        .expect('content-length', '941')
         .expect(STATUS_CODES.ok, done);
     });
   });
