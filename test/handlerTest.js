@@ -1,8 +1,6 @@
 const request = require('supertest');
 const {app} = require('../lib/handler.js');
 const STATUS_CODES = require('../lib/statusCodes.js');
-const config = require('../config.js');
-const {truncateSync} = require('fs');
 
 describe('GET', function() {
   context('request for html files', function() {
@@ -73,9 +71,6 @@ describe('PUT /guestBook.html', function() {
 });
 
 describe('POST /guestBook.html ', function() {
-  afterEach(() => {
-    truncateSync(config.DATA_STORE);
-  });
   context('when content-type is application/x-www-form-urlencoded', function() {
     it('should parse queryString & respond with "redirect"', function(done) {
       request(app.serveRequest.bind(app))
